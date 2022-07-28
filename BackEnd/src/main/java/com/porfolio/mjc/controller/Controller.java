@@ -1,8 +1,11 @@
 package com.porfolio.mjc.controller;
 
 import com.porfolio.mjc.model.Persona;
+import com.porfolio.mjc.service.IPersonaService;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Controller {
     
+    @Autowired
+    private IPersonaService persoServ;
+    
+    /*
     List<Persona> listaPersonas = new ArrayList();
     
     
@@ -30,20 +37,26 @@ public class Controller {
                             @RequestParam int edad){
         return "Chau mundo "+nombre+ " Apellido: "+apellido+" Edad: "+edad;
     }
-    
+    */
     
     //Creamos el endpoint
     @PostMapping ("/new/persona")
     public void agregarPersona (@RequestBody Persona pers){
-        listaPersonas.add(pers);
+        persoServ.crearPersona(pers);
+        //listaPersonas.add(pers);
     }
     
     @GetMapping ("/ver/personas")
     @ResponseBody
     public List<Persona> verPersonas(){
-        return listaPersonas;
+        return persoServ.verPersona();
+        //return listaPersonas;
     }
     
+    @DeleteMapping ("/delete/{id}")
+    public void borrarPersona (@PathVariable Long id){
+        persoServ.borrarPersona(id);
+    }
     
     
     
